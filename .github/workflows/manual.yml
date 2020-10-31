@@ -3,7 +3,7 @@ name: scratch manual workflow file
 on:
   workflow_dispatch:
     inputs:
-      name:
+      email:
         description: 'Email to send to'
         required: true
         default: 'doug@autotiv.com'
@@ -15,6 +15,27 @@ jobs:
   say_hello:
     runs-on: ubuntu-latest
     steps:
+    - name: verify
+      run: |
+        echo ${{ github.event.inputs.email }}
     - run: |
         echo "Hello ${{ github.event.inputs.name }}!"
         echo "- in ${{ github.event.inputs.home }}!"
+    - name: Send mail
+      uses: dawidd6/action-send-mail@v2
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{secrets.MAIL_USERNAME}}
+        password: ${{secrets.MAIL_PASSWORD}}
+        subject: Github Actions job result
+        # Literal body:
+        body: Build job of ${{github.repository}} completed successfully!
+        # # Read file contents as body:
+        # body: file://README.md
+        to: doug@autotiv.com,redstonefreedom@gmail.com
+        from: Build Jobber # <user@example.com>
+        # Optional content type (defaults to text/plain):
+        content_type: text/html
+        # # Optional attachments:
+        # attachments: attachments.zip,git.diff,./dist/static/main.js
