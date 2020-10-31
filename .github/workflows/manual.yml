@@ -1,1 +1,20 @@
 name: scratch manual workflow file
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Email to send to'
+        required: true
+        default: 'doug@autotiv.com'
+      home:
+        description: 'location'
+        required: false
+
+jobs:
+  say_hello:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Hello ${{ github.event.inputs.name }}!"
+        echo "- in ${{ github.event.inputs.home }}!"
