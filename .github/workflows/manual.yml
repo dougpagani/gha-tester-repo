@@ -17,8 +17,8 @@ on:
 env:
   codeReviewerEmail: doug@autotiv.com
   codeReviewerGithubName: dougpagani
-  productManagerEmail: redstonefreedom@gmail.com
-  productManagerGithubName: redstonefreedom@gmail.com
+  productManagerEmail: dylan@autotiv.com
+  productManagerGithubName: dylpickles93
   opsBoardNumber: 406613495
 
 jobs:
