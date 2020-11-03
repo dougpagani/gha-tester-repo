@@ -24,7 +24,7 @@ jobs:
     #     echo "- in ${{ github.event.inputs.home }}!"
 
     # General Message Format:
-        # Deployment Completed
+        # Deployment Completed.
         # - app url: https://cwa-ticket-1234.eba-cwuqbgah.us-east-1.elasticbeanstalk.com/
         # - to terminate when review is done: 
         #   - cli: npm run deploy:terminate CWA-ticket-595090142
@@ -38,7 +38,7 @@ jobs:
       # - **monday.com ticket:** https://autotiv.monday.com/boards/${{ops-config.board number}}/pulses/${{ runOutput.ticket-number }}
       run: |
         cat > plaintext.txt << HERE
-        Deployment Completed
+        Deployment Completed.
         - app url: https://\${{ '' }}
         - to terminate when review is done: 
           - cli: npm run deploy:terminate CWA-ticket-\${runOutput.ticket-number}
@@ -52,7 +52,8 @@ jobs:
       # - **monday.com ticket:** https://autotiv.monday.com/boards/${{ops-config.board number}}/pulses/${{ runOutput.ticket-number }}
       run: |
         cat > email.txt << HERE
-        <u><i>Deployment Completed</i></u>
+        <u><i>Deployment Completed.</i></u>
+        <br>
         <br>
         - <b>app url:</b> https://\${{ '' }}
         <br>
@@ -71,7 +72,7 @@ jobs:
       # - app url: https://elasticbeanstalk
       run: |
         cat > gh-pr.txt << HERE
-        _Deployment Completed_
+        _Deployment Completed._
         - **app url:** https://\${{ '' }}
         - to terminate when review is done: 
           - **cli:** `npm run deploy:terminate CWA-ticket-`
