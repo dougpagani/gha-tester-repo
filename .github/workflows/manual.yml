@@ -57,17 +57,12 @@ jobs:
         <br>
           <ul>
           <li><b>app url:</b> https://\${{ '' }}</li>
-          <br>
           <li>to terminate when review is done:</li>
-          <br>
             <ul>
               <li><b>cli</b>: <code>npm run deploy:terminate CWA-ticket-\${runOutput.ticket-number}</code></li>
-              <br>
               <li><b>gha</b>: go to github actions, and paste-in the ticket-id from monday.com</li>
-              <br>
             </ul>
           <li><b>guru doc</b> on process: link to diagram or whatever for context</li>
-          <br>
           <li><b>MDC ticket:</b> https://autotiv.monday.com/boards/\${ops-config.board number}/pulses/runOutput.ticket-number</li>
           </ul>
         <br>
