@@ -14,11 +14,11 @@ on:
 
 # static configuration goes here
 env:
-  - codeReviewerEmail: doug@autotiv.com
-  - codeReviewerGithubName: dougpagani
-  - productManagerEmail: redstonefreedom@gmail.com
-  - productManagerGithubName: redstonefreedom@gmail.com
-  - opsBoardNumber: 406613495
+  codeReviewerEmail: doug@autotiv.com
+  codeReviewerGithubName: dougpagani
+  productManagerEmail: redstonefreedom@gmail.com
+  productManagerGithubName: redstonefreedom@gmail.com
+  opsBoardNumber: 406613495
 
 jobs:
   sent_email:
