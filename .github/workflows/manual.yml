@@ -38,7 +38,7 @@ jobs:
 
     - name: Verify ticket number
       run: |
-        echo ${{ steps.branch.ticket_id }}
+        echo ${{ steps.branch.outputs.ticket_id }}
 
 
     # General Message Format Example:
