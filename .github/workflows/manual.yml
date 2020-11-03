@@ -130,13 +130,15 @@ jobs:
         content_type: text/html
         # # Optional attachments:
         # attachments: attachments.zip,git.diff,./dist/static/main.js
-    - name: Make PR comment
-      uses: unsplash/comment-on-pr@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        msg: "Check out this message!"
-        check_for_duplicate_msg: false  # OPTIONAL 
+
+    # This is slow, and less feature-rich (builds an entire docker container)
+    # - name: Make PR comment
+    #   uses: unsplash/comment-on-pr@master
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     msg: "Check out this message!"
+    #     check_for_duplicate_msg: false  # OPTIONAL 
 
     - name: Sticky Pull Request Comment
       # You may pin to the exact commit or the version.
