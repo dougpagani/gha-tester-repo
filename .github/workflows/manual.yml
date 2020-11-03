@@ -37,6 +37,9 @@ jobs:
     - name: Get ticket number from branch
       id: branch
       run: |
+
+        # probably grab it from a github internal variable, or envar
+        # echo 734285508-header-updates | \egrep -o -- '^[0-9]{9}'
         echo "::set-output name=ticket_id::595090142"
         echo "::warning file=changes.test,line=1,col=5::Duplicated Line Warning"
         echo "::warning ::Arbitrary warning"
