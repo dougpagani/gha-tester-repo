@@ -30,10 +30,15 @@ jobs:
     #     echo ${{ github.event.inputs.email }}
 
     - name: Get ticket number from branch
+      id: branch
       run: |
         echo "::set-output name=ticketNumber::595090142"
         echo "::warning file=changes.test,line=1,col=5::Duplicated Line Warning"
         echo "::warning ::Arbitrary warning"
+
+    - name: Verify ticket number
+      run: |
+        echo ${{ steps.branch.ticketNumber }}
 
 
     # General Message Format Example:
