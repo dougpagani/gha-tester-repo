@@ -1,7 +1,8 @@
 name: scratch manual workflow file
 
 on:
-  push # for gha-local act
+  # push # for gha-local act
+  pull_request
   # workflow_dispatch:
   #   inputs:
   #     email:
