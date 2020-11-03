@@ -1,7 +1,7 @@
 name: scratch manual workflow file
 
 on:
-  # push
+  # push # for gha-local act
   workflow_dispatch:
     inputs:
       email:
@@ -12,18 +12,25 @@ on:
         description: 'location'
         required: false
 
+# static configuration goes here
+env:
+  - codeReviewerEmail: doug@autotiv.com
+  - codeReviewerGithubName: dougpagani
+  - productManagerEmail: redstonefreedom@gmail.com
+  - productManagerGithubName: redstonefreedom@gmail.com
+  - opsBoardNumber: 406613495
+
 jobs:
   sent_email:
     runs-on: ubuntu-latest
     steps:
-    # - name: verify
+
+    # - name: verify input (for debugging)
     #   run: |
     #     echo ${{ github.event.inputs.email }}
-    # - run: |
-    #     echo "Hello ${{ github.event.inputs.name }}!"
-    #     echo "- in ${{ github.event.inputs.home }}!"
 
-    # General Message Format:
+
+    # General Message Format Example:
         # Deployment Completed.
         # - app url: https://cwa-ticket-1234.eba-cwuqbgah.us-east-1.elasticbeanstalk.com/
         # - to terminate when review is done: 
@@ -33,9 +40,6 @@ jobs:
         # - monday.com ticket: https://autotiv.monday.com/boards/406613495/pulses/595090142
 
     - name: Format message for plaintext
-      # - app url: https://elasticbeanstalk
-      # - cli: npm run deploy:terminate CWA-ticket-${{runOutput.ticket-number}}
-      # - **monday.com ticket:** https://autotiv.monday.com/boards/${{ops-config.board number}}/pulses/${{ runOutput.ticket-number }}
       run: |
         cat > plaintext.txt << HERE
         Deployment Completed.
@@ -44,12 +48,9 @@ jobs:
           - cli: npm run deploy:terminate CWA-ticket-\${runOutput.ticket-number}
           - gha: go to github actions, and paste-in the ticket-id from monday.com
         - guru doc on process: link to diagram or whatever for context
-        - monday.com ticket: https://autotiv.monday.com/boards/\${ops-config.board number}/pulses/runOutput.ticket-number
+        - monday.com ticket: https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/runOutput.ticket-number
         HERE
     - name: Format message for Email
-      # - app url: https://elasticbeanstalk
-      # - cli: npm run deploy:terminate CWA-ticket-${{runOutput.ticket-number}}
-      # - **monday.com ticket:** https://autotiv.monday.com/boards/${{ops-config.board number}}/pulses/${{ runOutput.ticket-number }}
       run: |
         cat > email.txt << HERE
         <u><i>Deployment Completed.</i></u>
@@ -62,21 +63,20 @@ jobs:
               <li><b>gha</b>: go to github actions, and paste-in the ticket-id from monday.com</li>
             </ul>
           <li><b>guru doc</b> on process: link to diagram or whatever for context</li>
-          <li><b>MDC ticket:</b> https://autotiv.monday.com/boards/\${ops-config.board number}/pulses/runOutput.ticket-number</li>
+          <li><b>MDC ticket:</b> https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/runOutput.ticket-number</li>
           </ul>
         <br>
         HERE
     - name: Format message for GH-PR
-      # - app url: https://elasticbeanstalk
       run: |
         cat > gh-pr.txt << HERE
-        _Deployment Completed._
+        _Deployment Completed._ @${{env.codeReviewerGithubName}} @${{env.productManagerGithubName}}
         - **app url:** https://\${{ '' }}
         - to terminate when review is done: 
           - **cli:** \`npm run deploy:terminate CWA-ticket-\`
           - **gha:** go to github actions, and paste-in the ticket-id from monday.com
         - **guru doc** on process: link to diagram or whatever for context
-        - **monday.com ticket:** https://autotiv.monday.com/boards/\${ops-config.board number}/pulses/runOutput.ticket-number
+        - **monday.com ticket:** https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/runOutput.ticket-number
         HERE
       
     - name: Send mail 
