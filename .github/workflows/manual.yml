@@ -29,6 +29,11 @@ jobs:
     #   run: |
     #     echo ${{ github.event.inputs.email }}
 
+    - name: Get ticket number from branch
+      run: |
+        echo "::set-output name=ticketNumber::595090142"
+        echo "::warning file=changes.test,line=1,col=5::Duplicated Line Warning"
+
 
     # General Message Format Example:
         # Deployment Completed.
@@ -84,6 +89,8 @@ jobs:
       with:
         server_address: smtp.gmail.com
         server_port: 465
+        # Key piece for configuring this email:
+        # https://support.google.com/accounts/answer/6010255
         username: ${{secrets.MAIL_USERNAME}}
         password: ${{secrets.MAIL_PASSWORD}}
         subject: Github Actions job result
