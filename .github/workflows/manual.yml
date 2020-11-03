@@ -56,10 +56,10 @@ jobs:
         Deployment Completed.
         - app url: https://\${{ '' }}
         - to terminate when review is done: 
-          - cli: npm run deploy:terminate CWA-ticket-\${runOutput.ticket-number}
+          - cli: npm run deploy:terminate CWA-ticket-${{ steps.branch.outputs.ticket_id; }}
           - gha: go to github actions, and paste-in the ticket-id from monday.com
         - guru doc on process: link to diagram or whatever for context
-        - monday.com ticket: https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/runOutput.ticket-number
+        - monday.com ticket: https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/${{steps.branch.outputs.ticket_id }}
         HERE
     - name: Format message for Email
       run: |
@@ -70,11 +70,11 @@ jobs:
           <li><b>app url:</b> https://\${{ '' }}</li>
           <li>to terminate when review is done:</li>
             <ul>
-              <li><b>cli</b>: <code>npm run deploy:terminate CWA-ticket-\${runOutput.ticket-number}</code></li>
+              <li><b>cli</b>: <code>npm run deploy:terminate CWA-ticket-${{ steps.branch.outputs.ticket_id }}</code></li>
               <li><b>gha</b>: go to github actions, and paste-in the ticket-id from monday.com</li>
             </ul>
           <li><b>guru doc</b> on process: link to diagram or whatever for context</li>
-          <li><b>MDC ticket:</b> https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/runOutput.ticket-number</li>
+          <li><b>MDC ticket:</b> https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/${{ steps.branch.outputs.ticket_id }}</li>
           </ul>
         <br>
         HERE
@@ -87,7 +87,7 @@ jobs:
           - **cli:** \`npm run deploy:terminate CWA-ticket-\`
           - **gha:** go to github actions, and paste-in the ticket-id from monday.com
         - **guru doc** on process: link to diagram or whatever for context
-        - **monday.com ticket:** https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/runOutput.ticket-number
+        - **monday.com ticket:** https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/${{ steps.branch.outputs.ticket_id }}
         HERE
       
     - name: Send mail 
