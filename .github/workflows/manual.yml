@@ -40,6 +40,21 @@ jobs:
       run: |
         echo ${{ steps.branch.outputs.ticket_id }}
 
+    - name: Format deployment name
+      id: deploymentName
+      run: |
+        echo "::set-output name=name::CWA-ticket-${{ steps.branch.outputs.ticket_id }}"
+
+    # TODO: do deployment, using ${{ steps.deploymentName.outputs.name }}
+
+    - name: Get elasticbeanstalk url 
+      id: beanstalkURL
+      run: |
+        url=http://CWA-cold.eba-cwuqbgah.us-east-1.elasticbeanstalk.com
+        # url=http://$(eb status ${{ steps.deploymentName.outputs.name }} | grep CNAME | sed 's/.*CNAME: //')
+        echo "::set-output name=url::${url}"
+
+
 
     # General Message Format Example:
         # Deployment Completed.
@@ -54,9 +69,9 @@ jobs:
       run: |
         cat > plaintext.txt << HERE
         Deployment Completed.
-        - app url: https://\${{ '' }}
+        - app url: https://${{ steps.beanstalkURL.outputs.url }}
         - to terminate when review is done: 
-          - cli: npm run deploy:terminate CWA-ticket-${{ steps.branch.outputs.ticket_id; }}
+          - cli: npm run deploy:terminate ${{ steps.deploymentName.outputs.name }}
           - gha: go to github actions, and paste-in the ticket-id from monday.com
         - guru doc on process: link to diagram or whatever for context
         - monday.com ticket: https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/${{steps.branch.outputs.ticket_id }}
