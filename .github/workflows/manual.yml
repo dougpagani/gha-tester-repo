@@ -44,7 +44,7 @@ jobs:
           - cli: npm run deploy:terminate CWA-ticket-${runOutput.ticket-number}
           - gha: go to github actions, and paste-in the ticket-id from monday.com
         - guru doc on process: link to diagram or whatever for context
-        - monday.com ticket: https://autotiv.monday.com/boards/${{ops-config.board number}}/pulses/runOutput.ticket-number
+        - monday.com ticket: https://autotiv.monday.com/boards/${ops-config.board number}/pulses/runOutput.ticket-number
         HERE
     - name: Format message for GH-PR
       # - app url: https://elasticbeanstalk
@@ -56,7 +56,7 @@ jobs:
           - **cli:** `npm run deploy:terminate CWA-ticket-
           - **gha:** go to github actions, and paste-in the ticket-id from monday.com
         - **guru doc** on process: link to diagram or whatever for context
-        - **monday.com ticket:** https://autotiv.monday.com/boards/${{ops-config.board number}}/pulses/runOutput.ticket-number
+        - **monday.com ticket:** https://autotiv.monday.com/boards/${ops-config.board number}/pulses/runOutput.ticket-number
         HERE
       
     - name: Send mail (github)
