@@ -32,12 +32,12 @@ jobs:
         # - guru doc on process: link to page + diagram or whatever for context
         # - monday.com ticket: https://autotiv.monday.com/boards/406613495/pulses/595090142
 
-    - name: Format message for Email
+    - name: Format message for plaintext
       # - app url: https://elasticbeanstalk
       # - cli: npm run deploy:terminate CWA-ticket-${{runOutput.ticket-number}}
       # - **monday.com ticket:** https://autotiv.monday.com/boards/${{ops-config.board number}}/pulses/${{ runOutput.ticket-number }}
       run: |
-        cat > email.txt << HERE
+        cat > plaintext.txt << HERE
         Deployment Completed
         - app url: https://\${{ '' }}
         - to terminate when review is done: 
@@ -45,6 +45,27 @@ jobs:
           - gha: go to github actions, and paste-in the ticket-id from monday.com
         - guru doc on process: link to diagram or whatever for context
         - monday.com ticket: https://autotiv.monday.com/boards/\${ops-config.board number}/pulses/runOutput.ticket-number
+        HERE
+    - name: Format message for Email
+      # - app url: https://elasticbeanstalk
+      # - cli: npm run deploy:terminate CWA-ticket-${{runOutput.ticket-number}}
+      # - **monday.com ticket:** https://autotiv.monday.com/boards/${{ops-config.board number}}/pulses/${{ runOutput.ticket-number }}
+      run: |
+        cat > email.txt << HERE
+        <u><i>Deployment Completed</i></u>
+        <br>
+        - <b>app url:</b> https://\${{ '' }}
+        <br>
+        - to terminate when review is done: 
+        <br>
+          - <b>cli</b>: <code>npm run deploy:terminate CWA-ticket-\${runOutput.ticket-number}</code>
+        <br>
+          - <b>gha</b>: go to github actions, and paste-in the ticket-id from monday.com
+        <br>
+        - <b>guru doc</b> on process: link to diagram or whatever for context
+        <br>
+        - <b>monday.com ticket:</b> https://autotiv.monday.com/boards/\${ops-config.board number}/pulses/runOutput.ticket-number
+        <br>
         HERE
     - name: Format message for GH-PR
       # - app url: https://elasticbeanstalk
@@ -59,7 +80,7 @@ jobs:
         - **monday.com ticket:** https://autotiv.monday.com/boards/\${ops-config.board number}/pulses/runOutput.ticket-number
         HERE
       
-    - name: Send mail (github)
+    - name: Send mail 
       uses: dawidd6/action-send-mail@v2
       with:
         server_address: smtp.gmail.com
@@ -78,28 +99,6 @@ jobs:
         to: doug@autotiv.com,redstonefreedom@gmail.com
         from: Build Jobber # <user@example.com>
         # Optional content type (defaults to text/plain):
-        # content_type: text/html
-        # # Optional attachments:
-        # attachments: attachments.zip,git.diff,./dist/static/main.js
-    - name: Send mail (pr)
-      uses: dawidd6/action-send-mail@v2
-      with:
-        server_address: smtp.gmail.com
-        server_port: 465
-        username: ${{secrets.MAIL_USERNAME}}
-        password: ${{secrets.MAIL_PASSWORD}}
-        subject: Github Actions job result
-        # Literal body:
-        # body: |
-        #   Build job of ${{github.repository}} completed successfully!
-
-        #   How you like them apples????
-        body: file://gh-pr.txt
-        # # Read file contents as body:
-        # body: file://README.md
-        to: doug@autotiv.com,redstonefreedom@gmail.com
-        from: Build Jobber # <user@example.com>
-        # Optional content type (defaults to text/plain):
-        # content_type: text/html
+        content_type: text/html
         # # Optional attachments:
         # attachments: attachments.zip,git.diff,./dist/static/main.js
