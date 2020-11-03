@@ -47,7 +47,7 @@ jobs:
     - name: Format message for GH-PR
       # - app url: https://elasticbeanstalk
       run: |
-        cat > deployment-notification.file << HERE
+        cat > gh-pr.txt << HERE
         _Deployment Completed_
         - **app url:** https://${{ }}
         - to terminate when review is done: 
@@ -57,7 +57,7 @@ jobs:
         - **monday.com ticket:** https://autotiv.monday.com/boards/${{ops-config.board number}}/pulses/${{ runOutput.ticket-number }}
         HERE
       
-    - name: Send mail
+    - name: Send mail (github)
       uses: dawidd6/action-send-mail@v2
       with:
         server_address: smtp.gmail.com
@@ -71,6 +71,28 @@ jobs:
 
         #   How you like them apples????
         body: file://email.txt
+        # # Read file contents as body:
+        # body: file://README.md
+        to: doug@autotiv.com,redstonefreedom@gmail.com
+        from: Build Jobber # <user@example.com>
+        # Optional content type (defaults to text/plain):
+        # content_type: text/html
+        # # Optional attachments:
+        # attachments: attachments.zip,git.diff,./dist/static/main.js
+    - name: Send mail (pr)
+      uses: dawidd6/action-send-mail@v2
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{secrets.MAIL_USERNAME}}
+        password: ${{secrets.MAIL_PASSWORD}}
+        subject: Github Actions job result
+        # Literal body:
+        # body: |
+        #   Build job of ${{github.repository}} completed successfully!
+
+        #   How you like them apples????
+        body: file://gh-pr.txt
         # # Read file contents as body:
         # body: file://README.md
         to: doug@autotiv.com,redstonefreedom@gmail.com
