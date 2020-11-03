@@ -1,16 +1,16 @@
 name: scratch manual workflow file
 
 on:
-  # push # for gha-local act
-  workflow_dispatch:
-    inputs:
-      email:
-        description: 'Email to send to'
-        required: true
-        default: 'doug@autotiv.com'
-      home:
-        description: 'location'
-        required: false
+  push # for gha-local act
+  # workflow_dispatch:
+  #   inputs:
+  #     email:
+  #       description: 'Email to send to'
+  #       required: true
+  #       default: 'doug@autotiv.com'
+  #     home:
+  #       description: 'location'
+  #       required: false
 
 # static configuration goes here
 env:
@@ -129,3 +129,10 @@ jobs:
         content_type: text/html
         # # Optional attachments:
         # attachments: attachments.zip,git.diff,./dist/static/main.js
+    - name: Make PR comment
+      uses: unsplash/comment-on-pr@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        msg: "Check out this message!"
+        check_for_duplicate_msg: false  # OPTIONAL 
