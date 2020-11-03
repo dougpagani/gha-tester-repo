@@ -69,7 +69,7 @@ jobs:
       run: |
         cat > plaintext.txt << HERE
         Deployment Completed.
-        - app url: https://${{ steps.beanstalkURL.outputs.url }}
+        - app url: ${{ steps.beanstalkURL.outputs.url }}
         - to terminate when review is done: 
           - cli: npm run deploy:terminate ${{ steps.deploymentName.outputs.name }}
           - gha: go to github actions, and paste-in the ticket-id from monday.com
@@ -82,7 +82,7 @@ jobs:
         <u><i>Deployment Completed.</i></u>
         <br>
           <ul>
-          <li><b>app url:</b> https://\${{ '' }}</li>
+          <li><b>app url:</b> ${{ steps.beanstalkURL.outputs.url }}</li>
           <li>to terminate when review is done:</li>
             <ul>
               <li><b>cli</b>: <code>npm run deploy:terminate CWA-ticket-${{ steps.branch.outputs.ticket_id }}</code></li>
@@ -97,9 +97,9 @@ jobs:
       run: |
         cat > gh-pr.txt << HERE
         _Deployment Completed._ @${{env.codeReviewerGithubName}} @${{env.productManagerGithubName}}
-        - **app url:** https://\${{ '' }}
+        - **app url:** ${{ steps.beanstalkURL.outputs.url }}
         - to terminate when review is done: 
-          - **cli:** \`npm run deploy:terminate CWA-ticket-\`
+          - **cli:** \`npm run deploy:terminate ${{ steps.deploymentName.outputs.name }}\`
           - **gha:** go to github actions, and paste-in the ticket-id from monday.com
         - **guru doc** on process: link to diagram or whatever for context
         - **monday.com ticket:** https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/${{ steps.branch.outputs.ticket_id }}
