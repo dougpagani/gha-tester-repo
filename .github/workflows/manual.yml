@@ -33,6 +33,7 @@ jobs:
       run: |
         echo "::set-output name=ticketNumber::595090142"
         echo "::warning file=changes.test,line=1,col=5::Duplicated Line Warning"
+        echo "::warning ::Arbitrary warning"
 
 
     # General Message Format Example:
