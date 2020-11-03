@@ -15,6 +15,9 @@ on:
 
 # static configuration goes here
 env:
+  # If we put these data in a shared-config file, it could append to the
+  # $GITHUB_ENV file path, and it would be available to subsequent runs w/in a
+  # job.
   codeReviewerEmail: doug@autotiv.com
   codeReviewerGithubName: dougpagani
   productManagerEmail: doug@autotiv.com
