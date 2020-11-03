@@ -54,7 +54,6 @@ jobs:
         cat > email.txt << HERE
         <u><i>Deployment Completed.</i></u>
         <br>
-        <br>
           <ul>
           <li><b>app url:</b> https://\${{ '' }}</li>
           <li>to terminate when review is done:</li>
@@ -74,7 +73,7 @@ jobs:
         _Deployment Completed._
         - **app url:** https://\${{ '' }}
         - to terminate when review is done: 
-          - **cli:** `npm run deploy:terminate CWA-ticket-`
+          - **cli:** \`npm run deploy:terminate CWA-ticket-\`
           - **gha:** go to github actions, and paste-in the ticket-id from monday.com
         - **guru doc** on process: link to diagram or whatever for context
         - **monday.com ticket:** https://autotiv.monday.com/boards/\${ops-config.board number}/pulses/runOutput.ticket-number
