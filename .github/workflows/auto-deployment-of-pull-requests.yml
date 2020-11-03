@@ -1,4 +1,4 @@
-name: scratch manual workflow file
+name: Auto-Deployment of Pull Requests
 
 on:
   # push # for gha-local act
