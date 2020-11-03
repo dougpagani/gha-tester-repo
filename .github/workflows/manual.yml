@@ -1,16 +1,16 @@
 name: scratch manual workflow file
 
 on:
-  push
-  # workflow_dispatch:
-  #   inputs:
-  #     email:
-  #       description: 'Email to send to'
-  #       required: true
-  #       default: 'doug@autotiv.com'
-  #     home:
-  #       description: 'location'
-  #       required: false
+  # push
+  workflow_dispatch:
+    inputs:
+      email:
+        description: 'Email to send to'
+        required: true
+        default: 'doug@autotiv.com'
+      home:
+        description: 'location'
+        required: false
 
 jobs:
   sent_email:
