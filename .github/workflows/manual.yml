@@ -17,8 +17,12 @@ on:
 env:
   codeReviewerEmail: doug@autotiv.com
   codeReviewerGithubName: dougpagani
-  productManagerEmail: dylan@autotiv.com
-  productManagerGithubName: dylpickles93
+  productManagerEmail: doug@autotiv.com
+  productManagerGithubName: dougpagani
+
+  # productManagerEmail: dylan@autotiv.com
+  # productManagerGithubName: dylpickles93
+
   opsBoardNumber: 406613495
 
 jobs:
@@ -48,13 +52,28 @@ jobs:
 
     # TODO: do deployment, using ${{ steps.deploymentName.outputs.name }}
 
-    - name: Get elasticbeanstalk url 
+    - name: Get app url 
       id: beanstalkURL
       run: |
         url=http://CWA-cold.eba-cwuqbgah.us-east-1.elasticbeanstalk.com
+        # TODO: sample this on a real app run-through
         # url=http://$(eb status ${{ steps.deploymentName.outputs.name }} | grep CNAME | sed 's/.*CNAME: //')
         echo "::set-output name=url::${url}"
+    - name: Get AWS:EB management console url
+      id: ebmgmt
+      run: |
+        url="https://console.aws.amazon.com/elasticbeanstalk/home?region=us-east-1#/environment/dashboard?applicationName=CustomerWebApp&environmentId=e-3n7yurgyi2"
+        echo "::set-output name=url::${url}"
 
+        # TODO: sample this on a real app run-through
+        # ebStatus="$(eb status)"
+        # echo "$ebStatus"
+        # region=$(echo "$ebStatus" | grep "Region" | sed 's/.*Region: //')
+        # appName=$(echo "$ebStatus" | grep "Application Name" | sed 's/.*Application Name: //' )
+        # envId=$(echo "$ebStatus" | grep "Environment ID" | sed 's/.*Environment ID: //')
+
+        # url="https://console.aws.amazon.com/elasticbeanstalk/home?region=${region}#/environment/dashboard?applicationName=${appName}&environmentId=${envId}"
+        # echo "::set-output name=url::${url}"
 
 
     # General Message Format Example:
@@ -76,6 +95,7 @@ jobs:
           - gha: go to github actions, and paste-in the ticket-id from monday.com
         - guru doc on process: link to diagram or whatever for context
         - monday.com ticket: https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/${{steps.branch.outputs.ticket_id }}
+        - eb-env mgmt: ${{ steps.ebmgmt.outputs.url }}
         HERE
     - name: Format message for Email
       run: |
@@ -91,6 +111,7 @@ jobs:
             </ul>
           <li><b>guru doc</b> on process: link to diagram or whatever for context</li>
           <li><b>MDC ticket:</b> https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/${{ steps.branch.outputs.ticket_id }}</li>
+          <li>eb-env mgmt: ${{ steps.ebmgmt.outputs.url }}</li>
           </ul>
         <br>
         HERE
@@ -104,6 +125,7 @@ jobs:
           - **gha:** go to github actions, and paste-in the ticket-id from monday.com
         - **guru doc** on process: link to diagram or whatever for context
         - **monday.com ticket:** https://autotiv.monday.com/boards/${{ env.opsBoardNumber }}/pulses/${{ steps.branch.outputs.ticket_id }}
+        - **eb-env mgmt**: ${{ steps.ebmgmt.outputs.url }}
         HERE
       
     - name: Send mail 
