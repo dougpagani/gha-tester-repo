@@ -37,7 +37,7 @@ jobs:
       run: |
         cat > email.txt << HERE
         Deployment Completed
-        - app url: https://${{ }}
+        - app url: https://${{ '' }}
         - to terminate when review is done: 
           - cli: npm run deploy:terminate CWA-ticket-${{runOutput.ticket-number}}
           - gha: go to github actions, and paste-in the ticket-id from monday.com
@@ -49,7 +49,7 @@ jobs:
       run: |
         cat > gh-pr.txt << HERE
         _Deployment Completed_
-        - **app url:** https://${{ }}
+        - **app url:** https://${{ '' }}
         - to terminate when review is done: 
           - **cli:** `npm run deploy:terminate CWA-ticket-${{runOutput.ticket-number}}`
           - **gha:** go to github actions, and paste-in the ticket-id from monday.com
