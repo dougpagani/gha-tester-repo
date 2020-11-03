@@ -32,13 +32,13 @@ jobs:
     - name: Get ticket number from branch
       id: branch
       run: |
-        echo "::set-output name=ticketNumber::595090142"
+        echo "::set-output name=ticket_id::595090142"
         echo "::warning file=changes.test,line=1,col=5::Duplicated Line Warning"
         echo "::warning ::Arbitrary warning"
 
     - name: Verify ticket number
       run: |
-        echo ${{ steps.branch.ticketNumber }}
+        echo ${{ steps.branch.ticket_id }}
 
 
     # General Message Format Example:
