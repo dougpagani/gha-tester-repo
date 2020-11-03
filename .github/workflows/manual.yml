@@ -65,7 +65,7 @@ jobs:
         <br>
         - <b>guru doc</b> on process: link to diagram or whatever for context
         <br>
-        - <b>monday.com ticket:</b> https://autotiv.monday.com/boards/\${ops-config.board number}/pulses/runOutput.ticket-number
+        - <b>MDC ticket:</b> https://autotiv.monday.com/boards/\${ops-config.board number}/pulses/runOutput.ticket-number
         <br>
         HERE
     - name: Format message for GH-PR
