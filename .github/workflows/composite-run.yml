@@ -13,6 +13,9 @@ jobs:
     - uses: ./.github/actions/composite-A
       with: 
         who-to-greet: 'Gerald'
+      id: composite-a
+    - run: echo ${{ steps.composite-a.outputs.random-number }}
+      name: Grab the output from the composite action
 
     # "Repo not found"
     # - id: foo
