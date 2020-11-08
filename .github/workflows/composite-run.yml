@@ -2,10 +2,11 @@ name: composite-run-example
 
 on: 
   # push
+  # pull_request
   workflow_dispatch
 
 jobs:
-  hello_world_job:
+  composite-run-example:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
