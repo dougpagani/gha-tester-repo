@@ -11,6 +11,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: ./.github/actions/composite-A
+      with: 
+        who-to-greet: 'Gerald'
 
     # "Repo not found"
     # - id: foo
