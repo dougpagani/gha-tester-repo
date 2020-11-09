@@ -13,7 +13,7 @@ jobs:
       # - name: save event payload 
       #   run: ${{ }}
       - uses: actions/upload-artifact@v2
-        name: upload artifact: ${{ github.event_name }}
+        name: upload artifact
         with:
           name: ghevent
           path: ${{ github.event_path }}
