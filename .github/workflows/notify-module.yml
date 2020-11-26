@@ -38,13 +38,17 @@ jobs:
           to: ${{ env.maintainer_email }}
           subject: "GHA Job[${{ github.job }}, of wf ${{ github.workflow }}]: ${{ job.status }}"
           body: |
-            # probably need to urlEncode this with an action or at least cli
+            <!-- probably need to urlEncode this with an action or at least cli -->
             workflow link: https://github.com/${{ github.repository_owner }}/${{ github.repository }}/actions?query=workflow:${{ github.workflow }}
+            <!--
             # e.g.
             # https://github.com/dougpagani/gha-tester-repo/actions?query=workflow%3Acomposite-run-example
+            -->
             wf-run link: https://github.com/${{ github.repository_owner }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            <!--
             # e.g.
             # https://github.com/dougpagani/gha-tester-repo/actions/runs/353945951
+            -->
             workflow: ${{ github.workflow }}
             job: ${{ github.job }} # 
             event: ${{ github.event_name }}
@@ -57,10 +61,12 @@ jobs:
             job: ${{ job.status }}
             github.run_id: ${{ github.run_id }}
             github.run_number: ${{ github.run_number }}
+            <!--
             # compare against:
             # https://github.com/dougpagani/gha-tester-repo/actions/runs/353945951
             # job-statuses: \${ jobs.*.conclusion }} # no such thing as the jobs object
+            -->
             github.event: ${{ github.event }}
           from: GHA-bot # <user@example.com>
-          content_type: text/plain
+          content_type: text/html
           attachments: ${{ steps.eventpayload.outputs.event_payload_path }}
