@@ -16,8 +16,11 @@ jobs:
           git config user.email 'redstonefreedom@gmail.com'
           touch dude
           date +%s >> report.txt
+          git status
+          git add .
           git commit -am "Modify tracked file during workflow"
           date +%s >> new-report.txt
+          git add .
           git add -A
           git commit -m "Add untracked file during workflow"
       - name: Uncommitted change
