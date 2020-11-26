@@ -61,6 +61,6 @@ jobs:
             # https://github.com/dougpagani/gha-tester-repo/actions/runs/353945951
             # job-statuses: \${ jobs.*.conclusion }} # no such thing as the jobs object
             github.event: ${{ github.event }}
-          from: noreply # <user@example.com>
+          from: GHA-bot # <user@example.com>
           content_type: text/plain
           attachments: ${{ steps.eventpayload.outputs.event_payload_path }}
