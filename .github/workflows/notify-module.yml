@@ -43,12 +43,9 @@ jobs:
             workflow: ${{ github.workflow }}
             job: ${{ github.job }}
             event: ${{ github.event_name }}
-            action: ${{ github.action }} # maybe irrelevant
-            action path: ${{ github.action_path }} # maybe irrelevant
-            repo: ${{ github.repository }} # maybe irrelevant
-            sha1: ${{ github.sha }} # maybe irrelevant
-            ref: ${{ github.ref }}  # maybe irrelevant
-            github.workspace: ${{ github.workspace }} # maybe irrelevant
+            repo: ${{ github.repository }}
+            ref: ${{ github.ref }}
+            sha1: ${{ github.sha }}
             job: ${{ job.status }}
             github.run_id: ${{ github.run_id }}
             github.run_number: ${{ github.run_number }}
@@ -62,6 +59,10 @@ jobs:
             # compare against:
             # https://github.com/dougpagani/gha-tester-repo/actions/runs/353945951
             # job-statuses: \${ jobs.*.conclusion }} # no such thing as the jobs object
+            # Irrelevant:
+            # github.workspace: ${{ github.workspace }} # maybe irrelevant
+            # action: ${{ github.action }} # will be the action this was interpolated under; generate email payload elsewhere if this matters
+            # action path: ${{ github.action_path }}
 
           from: GHA-bot # <user@example.com>
           content_type: text/plain
