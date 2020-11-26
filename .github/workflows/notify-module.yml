@@ -23,7 +23,7 @@ jobs:
           mv ${{ github.event_path }} $event_payload_path
           echo "set output:: event_payload_path=${event_payload_path}"
           echo ${event_paylaod_path}
-          event_payload_path=./gha-${{ EVENT TYPE }}.json
+          event_payload_path=./gha-${{ github.event_name }}.json
       - name: Send mail 
         # JOB
         if: ${{ always() }} // success / failure / cancelled
@@ -61,6 +61,7 @@ jobs:
             # compare against:
             # https://github.com/dougpagani/gha-tester-repo/actions/runs/353945951
             # job-statuses: ${{ jobs.*.conclusion }} # no such thing as the jobs object
+            github.event: ${{ github.event }}
           to: ${{ env.maintainer_email }}
           from: noreply # <user@example.com>
           content_type: text/plain
