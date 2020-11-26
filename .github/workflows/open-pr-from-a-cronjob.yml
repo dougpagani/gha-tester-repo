@@ -14,9 +14,9 @@ jobs:
           set -x
           git config user.name 'Doug Pagani' # this should be the maintainer
           git config user.email 'redstonefreedom@gmail.com'
-          date +%s > report.txt
+          date +%s >> report.txt
           git commit -am "Modify tracked file during workflow"
-          date +%s > new-report.txt
+          date +%s >> new-report.txt
           git add -A
           git commit -m "Add untracked file during workflow"
       - name: Uncommitted change
