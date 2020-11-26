@@ -19,11 +19,10 @@ jobs:
         if: ${{ always() }} // needed for subsequent runstep
         run: |
           echo ${{ github.event_path }} 
-          event_payload_path=./gha-${{ EVENT TYPE }}.json
+          event_payload_path=./gha-${{ github.event_name}}.json
           mv ${{ github.event_path }} $event_payload_path
           echo "set output:: event_payload_path=${event_payload_path}"
           echo ${event_paylaod_path}
-          event_payload_path=./gha-${{ github.event_name }}.json
       - name: Send mail 
         # JOB
         if: ${{ always() }} // success / failure / cancelled
