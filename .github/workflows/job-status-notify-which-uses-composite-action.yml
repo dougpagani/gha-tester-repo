@@ -16,7 +16,7 @@ jobs:
           exit ${{ github.event.inputs.exitcode }}
       - uses: actions/checkout@v2
       - name: job-status-report
-        uses: .github/actions/job-status-notify
+        uses: ./.github/actions/job-status-notify
         with: 
           dooby: "doo"
 
