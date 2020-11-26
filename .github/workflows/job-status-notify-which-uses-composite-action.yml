@@ -1,0 +1,21 @@
+on:
+  workflow_dispatch:
+    inputs:
+      exitcode:
+        description: '1 for failure, 0 for success'
+        required: true
+        default: 0
+
+jobs:
+  simplejob:
+    runs-on: ubuntu-latest
+    steps:
+      - name: exiting
+        run: |
+          echo ${{ github.event.inputs.exitcode }}
+          exit ${{ github.event.inputs.exitcode }}
+      - name: job-status-report
+        uses: ./github/actions/job-status-notify
+        with: 
+          dooby: "doo"
+

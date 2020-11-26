@@ -1,0 +1,74 @@
+name: 'Job Status Notify'
+description: "Collate useful information about a job's completion"
+inputs:
+  dooby:  
+    description: 'nonsense variable'
+    required: true
+    default: 'doober'
+runs:
+  using: "composite"
+  steps: 
+    - id: eventpayload
+      if: ${{ always() }} # needed for subsequent runstep
+      run: |
+        echo github.event_path: [${{ github.event_path }}]
+        event_payload_path=./gha-${{ github.event_name}}.json
+        mv ${{ github.event_path }} $event_payload_path
+        echo "::set-output name=event_payload_path::${event_payload_path}"
+        echo event_payload_path: [${event_paylaod_path}]
+    - name: Send mail 
+      # JOB
+      if: ${{ always() }} # success / failure / cancelled
+      env: 
+        maintainer_email: ${{ secrets.MAINTAINER_EMAIL }}
+      uses: dawidd6/action-send-mail@v2
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        # Key piece for configuring this email: https://support.google.com/accounts/answer/6010255
+        username: ${{secrets.MAIL_USERNAME}}
+        password: ${{secrets.MAIL_PASSWORD}}
+        to: ${{ env.maintainer_email }}
+        subject: "GHA Job[${{ github.job }}, of wf ${{ github.workflow }}]: ${{ job.status }}"
+        body: |
+          workflow link: https://github.com/${{ github.repository }}/actions?query=workflow:${{ github.workflow }} 
+          wf-run link: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          workflow: ${{ github.workflow }}
+          job: ${{ github.job }}
+          event: ${{ github.event_name }}
+          repo: ${{ github.repository }}
+          ref: ${{ github.ref }}
+          sha1: ${{ github.sha }}
+          job: ${{ job.status }}
+          github.run_id: ${{ github.run_id }}
+          github.run_number: ${{ github.run_number }}
+          github.event: ${{ github.event }}
+        # COMMENTS FOR ABOVE:
+          # probably need to urlEncode this with an action or at least cli
+          # e.g. workflow link
+          # https://github.com/dougpagani/gha-tester-repo/actions?query=workflow%3Acomposite-run-example
+          # e.g. runs link
+          # https://github.com/dougpagani/gha-tester-repo/actions/runs/353945951
+          # compare against:
+          # https://github.com/dougpagani/gha-tester-repo/actions/runs/353945951
+          # job-statuses: \${ jobs.*.conclusion }} # no such thing as the jobs object
+          # Irrelevant:
+          # github.workspace: ${{ github.workspace }} # maybe irrelevant
+          # action: ${{ github.action }} # will be the action this was interpolated under; generate email payload elsewhere if this matters
+          # action path: ${{ github.action_path }}
+
+        from: GHA-bot # <user@example.com>
+        content_type: text/plain
+        attachments: ${{ steps.eventpayload.outputs.event_payload_path }}
+
+    ################################################################################
+    # Local Action Patterns:
+    ################################################################################
+    # - run: echo Hello ${{ inputs.who-to-greet }}.
+    #   shell: bash
+    # - id: random-number-generator
+    #   run: echo "::set-output name=random-id::$(echo $RANDOM)"
+    #   shell: bash
+    # - run: ${{ github.action_path }}/goodbye.sh
+    #   shell: bash
+
