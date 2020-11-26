@@ -64,4 +64,4 @@ jobs:
           to: ${{ env.maintainer_email }}
           from: noreply # <user@example.com>
           content_type: text/plain
-          attachments: ${{run.eventpayload.outputs.event_payload_path }}
+          attachments: ${{ steps.eventpayload.outputs.event_payload_path }}
