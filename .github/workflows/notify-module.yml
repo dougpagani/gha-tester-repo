@@ -59,7 +59,7 @@ jobs:
             github.run_number: ${{ github.run_number }}
             # compare against:
             # https://github.com/dougpagani/gha-tester-repo/actions/runs/353945951
-            # job-statuses: ${{ jobs.*.conclusion }} # no such thing as the jobs object
+            # job-statuses: \${{ jobs.*.conclusion }} # no such thing as the jobs object
             github.event: ${{ github.event }}
           to: ${{ env.maintainer_email }}
           from: noreply # <user@example.com>
