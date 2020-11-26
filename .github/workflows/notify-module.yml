@@ -16,16 +16,16 @@ jobs:
           exit ${{ github.event.inputs.exitcode }}
       # NOTIFY:
       - id: eventpayload
-        if: ${{ always() }} // needed for subsequent runstep
+        if: ${{ always() }} # needed for subsequent runstep
         run: |
-          echo ${{ github.event_path }} 
+          echo github.event_path: [${{ github.event_path }}]
           event_payload_path=./gha-${{ github.event_name}}.json
           mv ${{ github.event_path }} $event_payload_path
-          echo "set output:: event_payload_path=${event_payload_path}"
-          echo ${event_paylaod_path}
+          echo "::set-output name=event_payload_path::${event_payload_path}"
+          echo event_payload_path: [${event_paylaod_path}]
       - name: Send mail 
         # JOB
-        if: ${{ always() }} // success / failure / cancelled
+        if: ${{ always() }} # success / failure / cancelled
         env: 
           maintainer_email: ${{ secrets.MAINTAINER_EMAIL }}
         uses: dawidd6/action-send-mail@v2
