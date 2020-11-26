@@ -1,0 +1,67 @@
+on:
+  workflow_dispatch:
+    inputs:
+      exitcode:
+        description: '1 for failure, 0 for success'
+        required: true
+        default: 0
+
+jobs:
+  simplejob:
+    runs-on: ubuntu-latest
+    steps:
+      - name: exiting
+        run: |
+          echo ${{ github.event.inputs.exitcode }}
+          exit ${{ github.event.inputs.exitcode }}
+      # NOTIFY:
+      - id: eventpayload
+        if: ${{ always() }} // needed for subsequent runstep
+        run: |
+          echo ${{ github.event_path }} 
+          event_payload_path=./gha-${{ EVENT TYPE }}.json
+          mv ${{ github.event_path }} $event_payload_path
+          echo "set output:: event_payload_path=${event_payload_path}"
+          echo ${event_paylaod_path}
+          event_payload_path=./gha-${{ EVENT TYPE }}.json
+      - name: Send mail 
+        # JOB
+        if: ${{ always() }} // success / failure / cancelled
+        env: 
+          - maintainer_email: ${{ SECRETS.maintainer_email }}
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          # Key piece for configuring this email: https://support.google.com/accounts/answer/6010255
+          username: ${{secrets.MAIL_USERNAME}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          # JOB:
+          subject: "GHA Job[${{ github.job }}, of wf ${{ github.workflow }}]: ${{ job.status }}"
+          body: |
+            # probably need to urlEncode this with an action or at least cli
+            workflow link: ${{ https://github.com/${{ github.repository_owner }}/${{ github.repository }}/actions?query=workflow:${{ github.workflow }}
+            # e.g.
+            # https://github.com/dougpagani/gha-tester-repo/actions?query=workflow%3Acomposite-run-example
+            wf-run link: ${{ https://github.com/${{ github.repository_owner }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            # e.g.
+            # https://github.com/dougpagani/gha-tester-repo/actions/runs/353945951
+            workflow: ${{ github.workflow }}
+            job: ${{ github.job }} # 
+            event: ${{ github.event_name }}
+            action: ${{ github.action }} # maybe irrelevant
+            action path: ${{ github.action_path }} # maybe irrelevant
+            repo: ${{ github.repository }} # maybe irrelevant
+            sha1: ${{ github.sha }} # maybe irrelevant
+            ref: ${{ github.ref }}  # maybe irrelevant
+            github.workspace: ${{ github.workspace }} # maybe irrelevant
+            job: ${{ job.status }}
+            github.run_id: ${{ github.run_id }}
+            github.run_number: ${{ github.run_number }}
+            # compare against:
+            # https://github.com/dougpagani/gha-tester-repo/actions/runs/353945951
+            # job-statuses: ${{ jobs.*.conclusion }} # no such thing as the jobs object
+          to: ${{ env.maintainer_email }}
+          from: noreply # <user@example.com>
+          content_type: text/plain
+          attachments: ${{run.eventpayload.outputs.event_payload_path }}
