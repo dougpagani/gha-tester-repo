@@ -27,7 +27,7 @@ jobs:
         # JOB
         if: ${{ always() }} // success / failure / cancelled
         env: 
-          - maintainer_email: ${{ SECRETS.maintainer_email }}
+          maintainer_email: ${{ SECRETS.maintainer_email }}
         uses: dawidd6/action-send-mail@v2
         with:
           server_address: smtp.gmail.com
