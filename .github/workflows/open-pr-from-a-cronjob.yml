@@ -1,7 +1,7 @@
 on: 
   schedule:
-    # - cron:  '*/15 * * * *'
-    - cron:  '30 6 * * *'
+    - cron:  '* * * * *' # should disable when not in use
+    # - cron:  '30 6 * * *'
 
 
 jobs:
