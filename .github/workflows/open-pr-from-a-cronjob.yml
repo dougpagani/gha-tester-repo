@@ -1,6 +1,6 @@
 on: 
   schedule:
-    - cron:  '* * * * *' # should disable when not in use
+    - cron:  '*/2 * * * *' # should disable when not in use
     # - cron:  '30 6 * * *'
 
 
