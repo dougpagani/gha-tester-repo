@@ -38,8 +38,8 @@ jobs:
           to: ${{ env.maintainer_email }}
           subject: "GHA Job[${{ github.job }}, of wf ${{ github.workflow }}]: ${{ job.status }}"
           body: |
-            workflow link: https://github.com/${{ github.repository_owner }}/${{ github.repository }}/actions?query=workflow:${{ github.workflow }}
-            wf-run link: https://github.com/${{ github.repository_owner }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            workflow link: https://github.com/${{ github.repository }}/actions?query=workflow:${{ github.workflow }}
+            wf-run link: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
             workflow: ${{ github.workflow }}
             job: ${{ github.job }} # 
             event: ${{ github.event_name }}
