@@ -1,3 +1,5 @@
+# GREAT documentation:
+# https://github.com/peter-evans/create-pull-request/blob/master/docs/concepts-guidelines.md#triggering-further-workflow-runs
 on: 
   schedule:
     - cron:  '*/2 * * * *' # should disable when not in use
