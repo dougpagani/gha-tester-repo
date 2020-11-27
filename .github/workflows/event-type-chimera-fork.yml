@@ -1,12 +1,12 @@
 # This highlights both concepts -- using a single workflow for multiple triggers
 on:
-  - workflow_dispatch:
+  workflow_dispatch:
       inputs:
         foobar:
           description: ''
           required: true
           default: 
-  - pull_request
+  pull_request:
 
 on:
   workflow_dispatch:
