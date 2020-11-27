@@ -1,8 +1,15 @@
 # This highlights both concepts -- using a single workflow for multiple triggers
 on:
-  [ workflow_dispatch, pull_request ]
-  # ^^ Don't know if this works
-  # TODO: add inputs to workflow dispatch
+  workflow_dispatch:
+      inputs:
+        foobar:
+          description: ''
+          required: true
+          default: 
+  pull_request:
+
+on:
+  workflow_dispatch:
 
 jobs:
   log-event:
@@ -14,13 +21,13 @@ jobs:
         name: gha-${{ github.event_name }}.json
         path: ${{ github.event_path }}
   onwfd:
-    # TODO: parse-out inputs from workflow dispatch
     if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     steps:
       - name:
         run: |
           echo it was a dispatch
+          echo ${{ github.event.inputs.foobar }}
           
   onpr:
     if: ${{ github.event_name == 'pull_request' }}
