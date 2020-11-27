@@ -1,3 +1,4 @@
+# NOT POSSIBLE B/C C-A's HAVE IMPLEMENTED VERY LITTLE
 name: 'Job Status Notify'
 description: "Collate useful information about a job's completion"
 inputs:
@@ -9,7 +10,7 @@ runs:
   using: "composite"
   steps: 
     - id: eventpayload
-      if: ${{ always() }} # needed for subsequent runstep
+      shell: bash
       run: |
         echo github.event_path: [${{ github.event_path }}]
         event_payload_path=./gha-${{ github.event_name}}.json
@@ -17,8 +18,7 @@ runs:
         echo "::set-output name=event_payload_path::${event_payload_path}"
         echo event_payload_path: [${event_paylaod_path}]
     - name: Send mail 
-      # JOB
-      if: ${{ always() }} # success / failure / cancelled
+      shell: bash
       env: 
         maintainer_email: ${{ secrets.MAINTAINER_EMAIL }}
       uses: dawidd6/action-send-mail@v2
