@@ -14,3 +14,9 @@ jobs:
       - run: |
           git checkout -b ${{ github.event.inputs.branch-name }}
           git push -u origin ${{ github.event.inputs.branch-name }}
+
+# Good for:
+# - cutting a release
+# - creating a branch from repository_dispatch trigger
+# - creating a branch from some janky-integration (issue_comments crap)
+
