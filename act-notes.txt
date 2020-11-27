@@ -1,0 +1,5 @@
+- act:
+    - dry-mode doesnt catch syntax errors like ${{ }} missing }} (so what is it good for?) (it will fail to verify in a real run, but say the workflow is successful in a dry-run)
+    - if the syntax is screwed-up (e.g. job instead of jobs top-level) it will ignore the file after reading, without feedback
+    - if the event type is not a select few (workflow_dispatch e.g. does not work) then it will ignore the file after reading, without feedback
+    - faild interpolations dont fail at github-level of things

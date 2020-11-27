@@ -1,0 +1,14 @@
+- does it work w/ if-always inside the local-action-file, instead of modifying it in the workflow file?
+- get a "workflow" version of job(s) statuses to work
+- exampels of compsite workflows
+- Try to stale-ify PRs
+- https://github.com/actions/stale
+
+    steps:
+    - uses: actions/stale@v3
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        stale-issue-message: 'Stale issue message'
+        stale-pr-message: 'Stale pull request message'
+        stale-issue-label: 'no-issue-activity'
+        stale-pr-label: 'no-pr-activity'

@@ -1,0 +1,39 @@
+- cron is flaky (every 2 minutes takes ~8 minutes to run)
+    > better to use workflow dispatch as a debugging-alternative for it
+- jobs, run are not actual contexts
+- github is, by far, the most useful (diverse) context
+    - including: github.event_name, .event, .repo
+- If a key, such as to: ${{ ... }} evaluates to null (because the secret is not there), the key will be dropped from the yaml
+
+
+
+- reusability methods:
+    - container
+        - across: jobs
+    - anchor tags:
+        - https://github.community/t/support-for-yaml-anchors/16128
+        - https://github.community/t/reusing-sharing-inheriting-steps-between-jobs-declarations/16851/13?u=dougpagani
+        - across: jobs
+            - for steps:
+            https://github.community/t/reusing-sharing-inheriting-steps-between-jobs-declarations/16851/13?u=dougpagani
+            - for an anchor extension, and naming a single (complicated) step configuration
+            https://github.community/t/reusing-sharing-inheriting-steps-between-jobs-declarations/16851/13?u=dougpagani
+    - composite-actions
+        - across: workflows
+    https://github.com/actions/runner/issues/646
+    - using strategy.merge
+    https://stackoverflow.com/questions/59757355/reuse-portion-of-github-action-across-jobs
+    ... + if/elses, for things like which env-name to use for preprod vs. development deployments
+
+- default timeout: 360 minutes (6 hours)
+
+- Random, good workflow examples:
+https://github.com/sweetalert2/sweetalert2/actions/runs/1737859/workflow
+
+- when would you drop to js?
+    - it is easier to log exports, warnings (using actions/core)
+    - it is easier to setup conditionals w/in a chimera-job w.r.t. github variables
+        - e.g. deploy to preprod, and deploy to dev
+    - it is easier to do filtering logic
+    - it is easier to setup curl calls
+    * CON: setting up a test environment, with test payload, etc.
