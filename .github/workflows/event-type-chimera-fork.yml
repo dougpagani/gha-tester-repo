@@ -13,7 +13,7 @@ jobs:
       with:
         name: gha-${{ github.event_name }}.json
         path: ${{ github.event_path }}
-  onpr:
+  onwfd:
     # TODO: parse-out inputs from workflow dispatch
     if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
@@ -22,7 +22,7 @@ jobs:
         run: |
           echo it was a dispatch
           
-  onwfd:
+  onpr:
     if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
