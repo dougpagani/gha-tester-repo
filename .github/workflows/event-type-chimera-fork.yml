@@ -1,0 +1,33 @@
+# This highlights both concepts -- using a single workflow for multiple triggers
+on:
+  [ workflow_dispach, pull_request ]
+  # ^^ Don't know if this works
+  # TODO: add inputs to workflow dispatch
+
+jobs:
+  log-event:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/upload-artifact@v2
+      name: upload artifact
+      with:
+        name: gha-${{ github.event_name }}.json
+        path: ${{ github.event_path }}
+  onpr:
+    # TODO: parse-out inputs from workflow dispatch
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name:
+        run: |
+          echo it was a dispatch
+          
+  onwfd:
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name:
+        run: |
+          if [[ ${{ github.event_name }} = 'pull_request' ]]; then
+            echo hey it is a pr
+          fi
