@@ -1,0 +1,55 @@
+name: Auto-Deploy to Development
+# prereq: env name target [CWA-development] exists in AWS
+
+# NOTE: add status badge for this branch/job
+
+on:
+  push:
+    branches:
+      - development
+env:
+  NODE_VERSION: 12.18.2
+  CI: false # even though this _is_ CI, it is needed because react is weird
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # - name: 1. print the env (only useful for debugging)
+      #   run: env
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
+      # This is annoying, but here's the context: https://github.com/nektos/act/issues/251
+      - name: Setup Setup Python
+        run: |
+            if [ ! -f "/etc/lsb-release" ] ; then
+              echo "The following note only applies if you're using nektos/act"
+              echo "Python wont work on this image for some strange reason; try:"
+              echo "\$ act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 <...>"
+              exit -1
+              # Hack to get setup-python to work on act
+              # echo "DISTRIB_RELEASE=18.04" > /etc/lsb-release
+            fi
+      - name: Setup Python
+        uses: actions/setup-python@v2.1.4
+        with:
+          # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+          python-version: 3 # optional
+      - name: check python version
+        run: |
+          type -a python
+          python --version
+      - name: power-up as an opsperson
+        env: 
+          AUTOTIV_REPO_KEY_BASE64: '${{ secrets.AUTOTIV_REPO_KEY_BASE64 }}'
+        run: npm run bootstrap:opsperson -- --skip-nvm # we need to do this ourselves
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: do an update deployment
+        run: CI=false npm run deploy:update CWA-development
+        # ^ this is needed for reason at top of file, in env:-section, and 
+        # ... also because nektos/act hasnt implemented env: https://github.com/nektos/act/issues/250
+

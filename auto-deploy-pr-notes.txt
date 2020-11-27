@@ -1,0 +1,31 @@
+To get it fully wired I need to:
+- run this out of a *manual* dispatch instead
+- format the message to be useful (terminate command)
+- hook it up w/ devops-configuration.sh, or something, which configures who/where to send messages
+- get a per-new-PR command-trigger to work
+- figure out how to comment on PR's w/ GHA
+
+Done:
+- email out of GHA --> we should make an @autotiv.com account for this... maybe "devops-notifier@autotiv.com" or sth like that
+- manual dispatch figured out as workflow_dispatch API
+
+GHA: Auto-deploy ticket
+- check if PR label == needsDR
+- parse the ticket ID from the branch name
+# * typical:
+- power-up as ops-agent
+- ACTIONS: configure environment (python, etc.)
+- fresh deploy
+# *
+- get cname -- eb status
+- send emails (to PM & CO)
+- post PR comment, tagging PM & CO
+
+
+Other Pieces:
+- deploy:terminate manual switch
+    "I'm sorry Dave, I'm afraid I can't do that.hal
+    ... with an if-block and stuff
+- deploy:update, commenting on PR's
+    https://github.com/marketplace/actions/get-current-pull-request
+- on-merge... update monday status

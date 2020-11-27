@@ -1,8 +1,11 @@
 name: Auto-Deployment of Pull Requests
+  # act -e .github/workflows/pull_request.json
 
 on:
   # push # for gha-local act
   pull_request
+  # Example payload of a pull_request event
+  # https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/webhook-events-and-payloads#pull_request
   # workflow_dispatch:
   #   inputs:
   #     email:
@@ -12,6 +15,7 @@ on:
   #     home:
   #       description: 'location'
   #       required: false
+    # webhook
 
 # static configuration goes here
 env:
@@ -29,34 +33,55 @@ env:
   opsBoardNumber: 406613495
 
 jobs:
-  sent_email:
+  deploy-and-notify-and-sync-with-ticket-manager:
     runs-on: ubuntu-latest
     steps:
 
-    # - name: verify input (for debugging)
-    #   run: |
-    #     echo ${{ github.event.inputs.email }}
+    - name: verify input (for debugging)
+      run: |
+        echo ${{ github.event.inputs.email }}
+        cwd
+    - name: exit
+      run: |
+        exit -1
 
     - name: Get ticket number from branch
       id: branch
       run: |
-
-        # probably grab it from a github internal variable, or envar
-        # echo 734285508-header-updates | \egrep -o -- '^[0-9]{9}'
+        # Actual Code:
+        branch_name=$( echo ${GITHUB_REF##*/} ) # cuts off refs/heads/ or refs/tags/
+        echo "::set-output name=branch_name::$branch_name"
+        ticket_id=$( echo ${branch_name} | \egrep -o -- '^[0-9]{9}' )
         echo "::set-output name=ticket_id::595090142"
-        echo "::warning file=changes.test,line=1,col=5::Duplicated Line Warning"
-        echo "::warning ::Arbitrary warning"
+
+        # How to do warnings
+        # echo "::warning file=changes.test,line=1,col=5::Duplicated Line Warning"
+        # echo "::warning ::Arbitrary warning"
+
+        # How to grab branch/ticket stuff
+        # probably grab it from a github internal variable, or envar
+        # i.e.
+        # echo 734285508-header-updates | \egrep -o -- '^[0-9]{9}'
+        # echo "::set-output name=branch_name::595090142"
+        # echo "::set-output name=ticket_id::595090142"
 
     - name: Verify ticket number
       run: |
         echo ${{ steps.branch.outputs.ticket_id }}
+        echo ${{ steps.branch.outputs.branch_id }}
 
     - name: Format deployment name
       id: deploymentName
       run: |
         echo "::set-output name=name::CWA-ticket-${{ steps.branch.outputs.ticket_id }}"
 
+    # *********
+    # DEPLOY
+    # *********
     # TODO: do deployment, using ${{ steps.deploymentName.outputs.name }}
+    # ***********
+    # END DEPLOY
+    # ***********
 
     - name: Get app url 
       id: beanstalkURL
@@ -211,3 +236,62 @@ jobs:
 #     pull-request-body: 
 #     # True if the pull request has been merged, false if not
 #     merged: 
+
+
+    - name: Update Monday.com Status to Deployment Completed / Awaiting Review
+      run: |
+        pulse_id=${{ steps.branch.outputs.ticket_id }}
+        cat > mutate-status-column.json << HERE
+        { "query": "mutation { create_update (item_id: ${pulse_id}, body: \"${msg}\") { id } }" }
+        HERE
+
+        curl https://api.monday.com/v2 \
+          -X POST \
+          -H "Content-Type: application/json" \
+          -H "Authorization: ${{ secrets.MONDAY_API_KEY }}" \
+          --data @mutate-status-column.json 
+
+    # There can be multiple PR's for an individual link, so this keeps you from looking for which
+    - name: mutate active PR link column
+      run: |
+        pulse_id=${{ steps.branch.outputs.ticket_id }}
+        link="${{ github.event.pull_request.url }}"
+        linkText="PR ${link##*/} # just get the end of e.g. .../pull/13
+        linkColumnValue="${link} ${linkTest}"
+        # ^This is a weird format, but here's how it works:
+        # https://monday.com/developers/v2#simple-column-values-section-link
+        
+
+        cat > mutate-active-pr.json << HERE
+        { "query": "mutation { change_simple_column_value (board_id: ${{ env.opsBoardNumber }}, item_id: ${pulse_id}, column_id: \"Active PR link\", value: "$linkColumnValue") { id } } " }
+        HERE
+
+        curl https://api.monday.com/v2 \
+          -X POST \
+          -H "Content-Type: application/json" \
+          -H "Authorization: ${{ secrets.MONDAY_API_KEY }}" \
+          --data @mutate-active-pr.json 
+
+
+    - name: Post PR link as a pulse-update in Monday.com
+      run: |
+        pulse_id=${{ steps.branch.outputs.ticket_id }}
+        dateLine=$(TZ=America/New_York date +'%A, %d %b %Y at %H:%M %p %Z')
+
+        msg="PR submitted & Deployment completed
+
+        ${{ github.event.pull_request.url }}
+        
+        $date
+        "
+
+        cat > pulse-update-comment.json << HERE
+        { "query": "mutation { create_update (item_id: ${pulse_id}, body: \"${msg}\") { id } }" }
+        HERE
+
+        curl https://api.monday.com/v2 \
+          -X POST \
+          -H "Content-Type: application/json" \
+          -H "Authorization: ${{ secrets.MONDAY_API_KEY }}" \
+          --data @pulse-update-comment.json 
+

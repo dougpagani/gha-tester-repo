@@ -1,0 +1,41 @@
+name: Manual Termination of Ticket EB Env
+
+on:
+  workflow_dispatch:
+    inputs:
+      ticket_id:
+        description: 'Ticket ID from Monday.com'
+        required: true
+  # echo ${{ github.event.inputs.INPUTNAME }}
+
+env:
+  eb_env_id: CWA-ticket-${{ github.event.inputs.ticket }}
+
+jobs:
+  terminate:
+    runs-on: ubuntu-latest
+    steps:
+      # Q: Can you even refer to inputs via env?
+      - name: Validate that the env is not production
+        run: |
+          { [[ ${{ env.eb_env_id }} = CWA-A ]] || [[ ${{ env.eb_env_id }} = CWA-B ]]; } \
+          && exit -1
+      - name: Validate that the env is not production
+        if: 
+        run: |
+          echo "Validated: ${{ env.eb_env_id }}"
+      - name: Made it to the end?
+        run: |
+          echo Fin.
+
+      # - name: Power-up as Ops Agent
+      #   run: |
+      #     npm run bootstrap:opsperson
+      # - name: Terminate the Environment
+      #   run: |
+      #     npm run deploy:terminate ${{  }}
+
+
+
+
+
