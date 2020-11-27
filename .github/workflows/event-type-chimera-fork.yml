@@ -1,5 +1,6 @@
 # This highlights both concepts -- using a single workflow for multiple triggers
 on:
+  # It turns from an array of scalars to an array of objects; if you want to configure one, you must configure all (with null)
   workflow_dispatch:
       inputs:
         foobar:
