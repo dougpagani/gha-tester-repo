@@ -1,0 +1,8 @@
+# Got this f/ somewhere... I think GQL
+print-cmdline curl 'https://api.monday.com/v2' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' -H 'Origin: file://' -H "Authorization: ${MDCOM_KEY}" --data-binary '{"query":"# Write your query or mutation here\nquery {\n  me {\n    is_guest\n    join_date\n  }\n}\n"}' --compressed
+
+
+
+
+# Curl calls
+# ./curl-yaml.sh item-query.yaml  | jq .data.items_by_column_values[0].id  --> pulse_id

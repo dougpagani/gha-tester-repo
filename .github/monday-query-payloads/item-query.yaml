@@ -1,0 +1,10 @@
+query: >-
+  query {
+    # items_by_column_values (board_id: 837208904, column_id: "status_1", column_value: "STUCK") {
+    items_by_column_values (board_id: 837208904, column_id: "name", column_value: "test Ψγβθληστψωϕ") {
+      id
+    }
+  }
+# ./curl-yaml.sh item-query.yaml  | jq .data.items_by_column_values[0].id  --> pulse_id
+
+# github.event.pull_request.action ==> submitted, edited, dismissed

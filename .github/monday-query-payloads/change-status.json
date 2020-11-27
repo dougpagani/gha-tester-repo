@@ -1,0 +1,1 @@
+{ "query": "mutation { change_column_value (board_id: 837208904, item_id: 837775790, column_id: \"status_1\", value: \"{\\\"index\\\": 2}\") { id } } " }

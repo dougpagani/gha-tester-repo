@@ -1,0 +1,7 @@
+query: >-
+  mutation { 
+    # change_column_value (board_id: 837208904, item_id: 854470545, column_id: "status_1", value: "{\"index\": 0}") { 
+    change_simple_column_value (board_id: 837208904, item_id: 854470545, column_id: "status_1", value: "STUCK") { 
+      id 
+    } 
+  } 

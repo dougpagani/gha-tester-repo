@@ -1,0 +1,8 @@
+query: >
+  mutation {
+    create_update (item_id: 854470545, body: "This update will be added to the item") {
+      id
+    }
+  }
+
+

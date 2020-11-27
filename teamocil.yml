@@ -1,0 +1,12 @@
+name: THIS SHOULD BE RENAMED
+windows:
+  - name: "gha-tester-repo"
+    root: ./
+    layout: "7c66,222x59,0,0{101x59,0,0[101x29,0,0,34,101x29,0,30,165],120x59,102,0[120x43,102,0,62,120x15,102,44,66]}"
+    panes:
+      - display_repoinfo
+      - focus: true
+        commands: 
+          - clear
+      - : vim update-monday-status.yml
+      - : vimp

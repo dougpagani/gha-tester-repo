@@ -1,0 +1,33 @@
+name: Update Monday Status
+on:
+  push
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Monday.com Status Action
+        # You may pin to the exact commit or the version.
+        uses: willstenzel/update-monday-status-action@8b2ef95a480e59bda7e720172adaacc91d74cac2
+        # uses: willstenzel/update-monday-status-action@v1.0
+        with:
+          # Monday.com API v2 Token
+          API_TOKEN: "${{ secrets.MDCOM_KEY }}"
+          # Unique board identifier
+          BOARD_ID: 837208904
+          # Column identifier
+          COLUMN_ID: Status
+          # Monday.com status when pull request has been submitted
+          submitted-status: Rejected
+          # Monday.com status when pull request has been merged
+          merged-status: Stuck
+          # Pull request body
+          pull-request-body: "https://autotiv.monday.com/boards/837208904/pulses/837775790"
+          # True if the pull request has been merged, false if not
+          merged: True
+
+# curl \
+#   -X POST \
+#   -H "Content-Type: application/json" \
+#   -H "Authorization: ${MDCOM_KEY}" \
+#   --data @mutation.txt \
+# https://api.monday.com/v2
