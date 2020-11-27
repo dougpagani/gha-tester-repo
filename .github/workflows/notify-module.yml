@@ -4,7 +4,7 @@ on:
       exitcode:
         description: '1 for failure, 0 for success'
         required: true
-        default: *defaultcode
+        default: 0
 
 jobs:
   simplejob:
