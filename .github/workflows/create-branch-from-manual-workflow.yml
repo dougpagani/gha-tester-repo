@@ -1,0 +1,16 @@
+on:
+  workflow_dispatch:
+    inputs:
+      branch-name:
+        description: ''
+        required: true
+        default: autobranch
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          git checkout -b ${{ github.event.inputs.branch-name }}
+          git push -u origin ${{ github.event.inputs.branch-name }}
