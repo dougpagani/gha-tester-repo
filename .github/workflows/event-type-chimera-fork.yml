@@ -1,6 +1,6 @@
 # This highlights both concepts -- using a single workflow for multiple triggers
 on:
-  [ workflow_dispach, pull_request ]
+  [ workflow_dispatch, pull_request ]
   # ^^ Don't know if this works
   # TODO: add inputs to workflow dispatch
 
