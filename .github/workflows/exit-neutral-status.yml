@@ -1,0 +1,14 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  exit-neutral:
+    runs-on: ubuntu-latest
+    steps:
+      - name:
+        run: |
+          echo i should be printed
+          exit 78
+      - name: this should not be executed, but skipped
+        run: |
+          echo dont print me
