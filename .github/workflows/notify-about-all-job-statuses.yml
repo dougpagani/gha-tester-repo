@@ -1,0 +1,27 @@
+on:
+  workflow_dispatch
+
+jobs:
+  log-event:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/upload-artifact@v2
+      name: upload artifact
+      with:
+        name: gha-${{ github.event_name }}.json
+        path: ${{ github.event_path }}
+  jobsucc1:
+    needs: 
+  jobsucc2:
+    needs: jobsucc1
+  jobfail1:
+
+  jobnotrun:
+    needs: jobfail2
+  jobfail2: 
+
+  ################################################################################
+  # BEGIN NOTIFICATION CONFIGURATION
+  ################################################################################
+  notifyw
+

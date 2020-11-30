@@ -1,0 +1,39 @@
+# Real world use-case: deployment logic, slightly modified, for preprod & prod
+# ... this is mostly just a workaround for no composite-actions
+# Slightly modify parameters in a series of similar steps
+
+on:
+  workflow_dispatch
+
+jobs:
+  two-builds-one-trigger:
+    strategy: 
+      matrix:
+        deployment-type: [ development, preprod ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: common step
+        run: |
+          echo commonly shared
+
+      - name: dev-only step
+        if: matrix.deployment-type == "development"
+        run: |
+          echo "only dev"
+
+      - name: preprod-only step
+        if: matrix.deployment-type == "preprod"
+        run: |
+          echo "only preprod"
+      - name: branching within a step
+        run: |
+          if [[ ${{ matrix.deployment-type }} = development ]]; then
+            echo "intra-step fork: development"
+          elif [[ ${{ matrix.deployment-type }} = preprod ]]; then
+            echo "intra-step fork: preprod"
+          else 
+            echo "ERROR: invalid matrix option: ${{ matrix-deployment-type }}"
+              exit -1
+          fi
+      - name: final shared step
+        run: "echo it is all satisfactory in the historically underserved habitation districts"

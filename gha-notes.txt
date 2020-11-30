@@ -37,3 +37,15 @@ https://github.com/sweetalert2/sweetalert2/actions/runs/1737859/workflow
     - it is easier to do filtering logic
     - it is easier to setup curl calls
     * CON: setting up a test environment, with test payload, etc.
+
+"event-type chimera, multiple independent jobs<->triggers, logically separate workflows"
+3 alternative jobs (semantic linking): Managing Ticket Deployments
+> FRESH (on: pr)
+>> UPDATE (on: push[pr])
+>>> TERMINATE (on: manual,chatops)
++ status updates
+
+"parameter-chimera, parameter-fork, tightly-coupled matrix"
+2 simultaneous jobs: deployment types
+- development
+- preprod

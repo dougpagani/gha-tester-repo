@@ -1,0 +1,42 @@
+# Real world use-case: grouping together a "ticket deployment" job, which has
+# several workflows necessary for it to work well:
+# - on-pr: fresh deploy
+# - on-push: update deploy
+# - manual: terminate
+on:
+  [ workflow_dispatch, pull_request, push ]
+
+jobs:
+  logevent:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/upload-artifact@v2
+      name: upload artifact
+      with:
+        name: gha-${{ github.event_name }}.json
+        path: ${{ github.event_path }}
+  pr-deploy:
+    # TODO: 
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name:
+        run: |
+          echo pull request
+          
+  push-update:
+    if: ${{ github.event_name == 'push' }} # TODO: and if that push is PR-associated
+    runs-on: ubuntu-latest
+    steps:
+      - name:
+        run: |
+          echo push update
+          
+  terminate-button:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name:
+        run: |
+          echo terminate button
+          echo TODO: leverage inputs 

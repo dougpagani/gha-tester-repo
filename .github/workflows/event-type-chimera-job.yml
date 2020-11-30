@@ -1,0 +1,30 @@
+# Real world example case: ????
+on:
+  [ workflow_dispatch, pull_request ]
+
+jobs:
+  log-event:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/upload-artifact@v2
+      name: upload artifact
+      with:
+        name: gha-${{ github.event_name }}.json
+        path: ${{ github.event_path }}
+  job:
+    runs-on: ubuntu-latest
+    steps:
+      - name:
+        run: |
+          do common thing
+      - run: echo other common thing
+      - run: echo another common thing
+      - name: logic-fork w.r.t. event-type
+        run: |
+          if [[ ${{ github.event_name }} = 'pull_request' ]]; then
+            echo pr
+          elif [[ ${{ github.event_name }} = 'workflow_dispatch' ]]; then
+            echo wfd
+          fi
+
+      - run: "echo last common thing"

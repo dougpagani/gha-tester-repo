@@ -12,3 +12,15 @@
         stale-pr-message: 'Stale pull request message'
         stale-issue-label: 'no-issue-activity'
         stale-pr-label: 'no-pr-activity'
+
+
+TODO:
+- workflow which notifies based on all previous executions, and reports on those statuses
+- test all the chimeras
+- anchor preprocessing (good solution for reusing all steps in the 3 jobs for supporting ticket-deployments)
+    - format: wf-name.yaml.anchored
+    - ".gh/steps-profiler/"
+    - manual trigger for ticket-deployments, first (parameterized with a branch)
+    - probably take out a lot of crap job steps
+        - migrate these to an "tester" directory under .gh; with different jobs as a sort of "profiling"
+    - will be more apparent how important it is to figure out a preprocessing system once the workflow ap is drafted
